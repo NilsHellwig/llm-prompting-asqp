@@ -1,49 +1,85 @@
-# Code: Do we still need Human Annotators? Prompting Large Language Models for Aspect Sentiment Quad Prediction
+# Do we still need Human Annotators? Prompting LLMs for ASQP
 
-This repository contains the code, data, and results for the paper:
+<div align="center">
 
-## 📄 Paper Abstract
+**Do we still need Human Annotators? Prompting Large Language Models for Aspect Sentiment Quad Prediction**
 
-Aspect sentiment quad prediction (ASQP) enables a detailed understanding of opinions expressed in a text by extracting four elements: the opinion term, aspect term, aspect category, and sentiment polarity for each opinion. However, creating annotated datasets to fine-tune ASQP models is resource-intensive.
+Accepted at **XLLM 2025** (1st Joint Workshop on LLMs and Structure Modeling) · Vienna, Austria
 
-In this study, we explore the capabilities of large language models (LLMs) for zero- and few-shot learning on the ASQP task across five diverse datasets. We report F1 scores nearly matching those of state-of-the-art fine-tuned models, and exceeding previously reported zero- and few-shot results. For example, in the 20-shot setting on the Rest16 restaurant domain dataset, LLMs achieved an F1 of **51.54**, compared to **60.39** by the fine-tuned MVP method. On the target aspect sentiment detection (TASD) task, LLMs achieved **68.93** on Rest16 in the 30-shot setting, compared to **72.76** with MVP.
+[![Paper](https://img.shields.io/badge/Paper_Download-ACL_Anthology-blue?style=for-the-badge&logo=googlescholar)](https://aclanthology.org/2025.xllm-1.15/)
+[![Correspondence](https://img.shields.io/badge/Contact-Nils%20Hellwig-darkred?style=for-the-badge&logo=minutemailer)](mailto:nils-constantin.hellwig@ur.de)
 
-Our findings suggest that while human annotators remain essential for top-tier performance, LLMs can meaningfully reduce the need for extensive manual annotation in ASQP tasks.
+---
 
-## ✨ Highlights
+**Nils Constantin Hellwig¹* · Jakob Fehle¹ · Udo Kruschwitz² · Christian Wolff¹**
 
-- Evaluated LLMs on ASQP and TASD across **five datasets**.
-- Tested **0 to 50-shot** settings.
-- Introduced a **new airline review ASQP dataset**.
-- Compared zero-/few-shot LLMs against fine-tuned small language models (SLMs).
-- Investigated **self-consistency prompting**.
+¹Media Informatics Group, University of Regensburg, Germany  
+²Information Science Group, University of Regensburg, Germany
 
-## 📊 Research Questions
+*✉ Correspondence to: [nils-constantin.hellwig@ur.de](mailto:nils-constantin.hellwig@ur.de)*  
+`{nils-constantin.hellwig, jakob.fehle, udo.kruschwitz, christian.wolff}@ur.de`
 
-- **RQ1:** How does varying the number of few-shot examples (0–50) impact ASQP performance?
-- **RQ2:** How do LLMs compare to fine-tuned SLMs on ASQP?
-- **RQ3:** Does self-consistency prompting improve LLM performance on ASQP?
+---
 
-## 📦 Installation
+</div>
 
+> **Abstract:** Aspect sentiment quad prediction (ASQP) facilitates a detailed understanding of opinions expressed in a text by identifying the opinion term, aspect term, aspect category and sentiment polarity for each opinion. However, annotating a full set of training examples to fine-tune models for ASQP is a resource-intensive process. In this study, we explore the capabilities of large language models (LLMs) for zero- and few-shot learning on the ASQP task across five diverse datasets. We report F1 scores almost up to par with those obtained with state-of-the-art fine-tuned models and exceeding previously reported zero- and few-shot performance. In the 20-shot setting on the Rest16 restaurant domain dataset, LLMs achieved an F1 score of 51.54, compared to 60.39 by the best-performing fine-tuned method MVP. Additionally, we report the performance of LLMs in target aspect sentiment detection (TASD), where the F1 scores were close to fine-tuned models, achieving 68.93 on Rest16 in the 30-shot setting, compared to 72.76 with MVP. While human annotators remain essential for achieving optimal performance, LLMs can reduce the need for extensive manual annotation in ASQP tasks.
+
+---
+
+## 🚀 Overview
+
+This repository contains the official implementation of the paper **"Do we still need Human Annotators? Prompting Large Language Models for Aspect Sentiment Quad Prediction"**. We investigate the performance of Large Language Models (LLMs) in Zero-Shot and Few-Shot scenarios for complex Aspect-Based Sentiment Analysis (ABSA) tasks.
+
+### Key Features
+- **LLM Prompting Framework**: Scripts for evaluating LLMs on ASQP and TASD.
+- **Multi-task Support**: Implementation for Target Aspect Sentiment Detection (TASD) and Aspect Sentiment Quad Prediction (ASQP).
+- **Comprehensive Benchmarking**: Evaluation across five diverse datasets including a new airline review ASQP dataset.
+- **Few-Shot Analysis**: Systematic study of performance from 0 to 50 annotated examples.
+- **Self-Consistency**: Investigation of self-consistency prompting strategies.
+
+## 📁 Repository Structure
+
+- `classifier/`: Implementation of different classification strategies and model-specific wrappers.
+- `datasets/`: Data for ASQP and TASD tasks (Rest15, Rest16, Hotels, Coursera, etc.).
+- `fs_examples/`: Few-shot examples used for in-context learning.
+- `generations/`: Output directory for LLM-generated predictions and baselines.
+- `prompt/`: Template files for different prompting strategies.
+- `study/`: Main execution scripts for the experimental studies (zero-shot, few-shot, etc.).
+- `dataloader.py`, `promptloader.py`: Utilities for loading data and prompts.
+- `evaluation.py`, `validator.py`: Scripts for calculating metrics and validating outputs.
+- `llm.py`: Interface for interacting with Large Language Models.
+
+## 🛠️ Setup & Usage
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nilshellwig/llm-prompting-asqp.git
+   cd llm-prompting-asqp
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Running Experiments
+
+To replicate the zero-shot experiments:
 ```bash
-pip install -r requirements.txt # install packages
-python study/01_zeroshot.py # run all prompting conditions
+python study/01_zeroshot.py
 ```
 
-## Authors
+To run the baseline evaluations:
+```bash
+python study/00_baselines.py
+```
 
-| Name                  | Group                  | Institution             | Location         | Email                                      |
-|-----------------------|------------------------|-------------------------|------------------|-------------------------------------------|
-| Nils Constantin Hellwig | Media Informatics Group | University of Regensburg | Regensburg, Germany | [nils-constantin.hellwig@ur.de](mailto:nils-constantin.hellwig@ur.de) |
-| Jakob Fehle          | Media Informatics Group | University of Regensburg | Regensburg, Germany | [jakob.fehle@ur.de](mailto:jakob.fehle@ur.de) |
-| Udo Kruschwitz       | Information Science Group | University of Regensburg | Regensburg, Germany | [udo.kruschwitz@ur.de](mailto:udo.kruschwitz@ur.de) |
-| Christian Wolff      | Media Informatics Group | University of Regensburg | Regensburg, Germany | [christian.wolff@ur.de](mailto:christian.wolff@ur.de) |
+## 📜 Citation
 
-
-## ✍ Citation
-
-```tex
+```bibtex
 @inproceedings{hellwig-etal-2025-still,
     title = "Do we still need Human Annotators? Prompting Large Language Models for Aspect Sentiment Quad Prediction",
     author = "Hellwig, Nils Constantin  and

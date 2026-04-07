@@ -38,21 +38,27 @@ class DataLoader:
         return lines
     
     def load_aug_ann(self, name, target, fs_num, aug_method):
+        """
+        Loads augmented annotations from specified augmentation method.
+        """
         lines = []
         idx_aug = {"eda": 2, "llm_eda": 3, "back_translation": 4}
         with open(f"./_out_synthetic_examples/0{str(idx_aug[aug_method])}_{aug_method}_few_shot_augmenter/{target}_{name}_{fs_num}.txt", "r", encoding="utf-8") as file:
             for line in file:
-                lines.append(line.strip())  # Entfernt Zeilenumbrüche
+                lines.append(line.strip())  # Remove line breaks
         
         lines_sorted = []
-                        
-        if aug_method == "eda" or aug_method == "llm_eda":
+        
+        # Determine number of augmentations per example
+        if aug_method in ["eda", "llm_eda"]:
             num_aug_for_example = int(len(lines) / fs_num)
-        if aug_method == "back_translation":
+        elif aug_method == "back_translation":
             num_aug_for_example = 5
-        for j in range(num_aug_for_example): # anzahl an annotierten beispielen   
-            for i in range(fs_num): # anzahl an beispielen die augmentiert wurden
-                lines_sorted.append(lines[j+num_aug_for_example*i])
+        
+        # Sort lines to align augmentations with original examples
+        for j in range(num_aug_for_example): # Number of annotated examples
+            for i in range(fs_num): # Number of examples that were augmented
+                lines_sorted.append(lines[j + num_aug_for_example * i])
 
         lines_sorted = lines_sorted * 10
         return lines_sorted

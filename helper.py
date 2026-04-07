@@ -22,13 +22,16 @@ class DotDict(dict):
     
 
 def clean_up(output_directory='./classifier/outputs'):
+    """
+    Deletes the output directory and moves the example file to the trash.
+    """
     if os.path.exists(output_directory):
         shutil.rmtree(output_directory)
         print(f'Directory {output_directory} has been deleted.')
     else:
         print(f'Directory {output_directory} does not exist.')
 
-    example_file_path = 'example.txt'  # Beispiel-Datei, die existieren muss
+    example_file_path = 'example.txt'  # File required for cleanup
 
     if os.path.exists(example_file_path):
         send2trash(example_file_path)
@@ -83,12 +86,13 @@ def get_frequency_for_counts(counts, minimum):
     return sorted(counts, reverse=True)[0:minimum][minimum-1]
 
 def get_unique_keys(dict_list):
-    unique_keys = set()  # Set für einzigartige Schlüssel
-
+    """
+    Returns a list of unique keys from a list of dictionaries.
+    """
+    unique_keys = set()
     for d in dict_list:
-        unique_keys.update(d.keys())  # Füge die Schlüssel zum Set hinzu
-
-    return list(unique_keys)  # Wandle das Set in eine Liste um und gebe es zurück
+        unique_keys.update(d.keys())
+    return list(unique_keys)
 
 
 def merge_aspect_lists(aspect_lists, minimum_appearance=3):

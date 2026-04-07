@@ -5,15 +5,15 @@ import os
 
 def train_mvp(**kwargs):
     from classifier.mvp.classifier import train_function_mvp
-    # Standardwerte
+    # Standard settings
     default_args = DotDict({
         "data_path": "./data",
-        "dataset": "rest15",  # Standardwert für dataset
+        "dataset": "rest15",  # Default dataset
         "model_name_or_path": "t5-base",
         "output_dir": "../outputs/",
         "num_train_epochs": 20,
         "save_top_k": 0,
-        "task": "asqp",  # Standardwert für task
+        "task": "asqp",  # Default task
         "top_k": 5,
         "ctrl_token": None,
         "multi_path": True,
@@ -47,14 +47,14 @@ def train_mvp(**kwargs):
         "test_ds": None,
     })
 
-    # Überschreiben der Standardwerte mit den übergebenen Argumenten
+    # Override default arguments with keyword arguments
     for key, value in kwargs.items():
         if key in default_args:
             default_args[key] = value
         else:
             raise ValueError(f"Unknown argument: {key}")
 
-    # Daten laden
+    # Load data
     dataloader = DataLoader()
     
     if default_args["train_ds"] is None:
@@ -70,20 +70,20 @@ def train_mvp(**kwargs):
     print("Train Dataset length:", len(train_ds))
     print("Test Dataset length:", len(test_ds))
     
-    # Update train_ds und test_ds in den Argumenten
+    # Update dataset fields in arguments
     default_args["train_ds"] = train_ds
     default_args["test_ds"] = test_ds
 
-    # Training ausführen
+    # Execute training
     scores = train_function_mvp(default_args)
 
-    # Outputs-Verzeichnis löschen
+    # Clean up outputs directory
     shutil.rmtree('classifier/outputs')
     os.makedirs('classifier/outputs', exist_ok=True)
 
     return scores
 
-# Beispielaufruf der Funktion mit überschriebenen Werten
+# Example function call with overridden parameters
 # scores = train_mvp(task="tasd", num_train_epochs=1)
 # print("SCORES:", scores)
 

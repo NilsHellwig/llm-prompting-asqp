@@ -115,16 +115,16 @@ def validate_label(predicted_label, input_text, unique_aspect_categories, polari
         if allow_small_variations == True:
             new_label = []
             for tup in label:
-                tup = list(tup)  # in Liste umwandeln, um Änderungen zu erlauben
+                tup = list(tup)  # Convert to list to allow modifications
 
-                # 1. Fall: nur 1 character Unterschied tup[0] und phrase in text_gen
+                # Case 1: Handle aspect term variation or capitalization
                 if tup[0] != "NULL" and tup[0].lower() not in input_text.lower():
                     if check_if_similar_phrase_exists(tup[0], input_text) == False:
                         return [False, "aspect term not in text"]
                     else:
                         tup[0] = check_if_similar_phrase_exists(tup[0], input_text)
 
-                # 2. Fall: tup[0] ist in text_gen, aber mit anderen Großbuchstaben
+                # Case 2: Aspect term in text but different capitalization
                 elif tup[0] != "NULL" and tup[0].lower() in input_text.lower():
                     start = input_text.lower().index(tup[0].lower())
                     end = start + len(tup[0])
@@ -133,7 +133,7 @@ def validate_label(predicted_label, input_text, unique_aspect_categories, polari
                 elif tup[0] != "NULL" and tup[0].lower() not in input_text.lower():
                     return [False, "aspect term not in text"]
 
-                # Nur bei Task == "asqp" prüfen wir auch tup[3] (opinion term)
+                # Check opinion term (element 4) if task is ASQP
                 if task == "asqp":
                     if tup[3] != "NULL" and tup[3].lower() not in input_text.lower():
                         if check_if_similar_phrase_exists(tup[3], input_text) == False:
@@ -147,7 +147,7 @@ def validate_label(predicted_label, input_text, unique_aspect_categories, polari
                     elif tup[3] != "NULL" and tup[3].lower() not in input_text.lower():
                         return [False, "opinion term not in text"]
 
-                new_label.append(tuple(tup))  # wieder Tupel draus machen
+                new_label.append(tuple(tup))  # Convert back to tuple
 
             label = new_label  # aktualisierte Liste übernehmen
 
